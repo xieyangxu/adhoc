@@ -33,3 +33,4 @@
 *.su
 
 ad-hoc
+socket.c
