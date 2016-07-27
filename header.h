@@ -31,7 +31,7 @@ typedef struct{
 
 //Route reply
 typedef struct{
-    unsigned int dest_addr;
+    int dest_addr_index;
     int addr_num;
     unsigned int addr[MAX_ADDR_NUM];
 }RREP;
