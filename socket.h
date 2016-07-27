@@ -5,7 +5,7 @@
 
 #define MAXBUF 65536
 #define IP_LENGTH 20
-#define BROADCAST_IP  "162.105.1.255"
+#define BROADCAST_IP  "123.123.123.255"
 
 char local_ip[IP_LENGTH+1];
 unsigned int local_ip_num;
