@@ -12,7 +12,7 @@ int is_local_IP(unsigned int ip);
 //brief: send unicast to a specific ip
 //return: the number of bytes that has been sent
 //        -1 means failed
-int send_unicast(unsigned int ip32, char *packet,int packet_len, char data_type);
+int send_unicast(unsigned int ip32, char *packet,int packet_len);
 
 //brief: send broadcast to all the neighbors
 //return: the number of bytes that has been sent
@@ -20,4 +20,4 @@ int send_unicast(unsigned int ip32, char *packet,int packet_len, char data_type)
 int send_broadcast(char *packet,int packet_len);
 
 //***brief: transfer the ip format from binary to Dotted Decimal Notation
-char *num_to_ip(unsigned int ip32,char *ip);
+int num_to_ip(unsigned int ip32,char *ip);
