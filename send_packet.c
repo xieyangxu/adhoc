@@ -27,7 +27,7 @@ int send_packet(unsigned int ip, char *data,int data_len){
 			data_packet.data_len = data_len;//fill DATA.data_len
 			memcpy(data_packet.data, data, data_len);//fill DATA.data[]	
 
-			char[sizeof(DATA) + 1] packet_content;
+			char packet_content[sizeof(DATA) + 1];
 			packet_content[0] = TYPE_DATA;//add packet TYPE
 			memcpy(packet_content + 1, &data_packet, sizeof(DATA));//transform into string format
 
