@@ -7,7 +7,7 @@
 #include "cache.h"
 #include <unistd.h>
 
-#define RETRY_LIMIT 15
+#define RETRY_LIMIT 31
 
 int send_packet(unsigned int ip, char *data,int data_len){
     int status = 0;//send_unicast(ip, data, data_len);
