@@ -37,7 +37,9 @@ void receive_packet(char *packet, int packet_len){
 
 void print_packet(char* packet_content)
 {
-	printf("Receive a DATA packet!!!\nThe cotent of packet received is: %s\n", packet_content);
+	DATA rc_data;
+	memcpy(&rc_data), packet_content, sizeof(DATA));	
+	printf("Receive a DATA packet!!!\nThe cotent of packet received is: %s\n", rc_data.data);
 	return;
 }
 
