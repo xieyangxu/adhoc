@@ -31,7 +31,7 @@ int send_packet(unsigned int ip, char *data,int data_len){
 			packet_content[0] = TYPE_DATA;//add packet TYPE
 			memcpy(packet_content + 1, &data_packet, sizeof(DATA));//transform into string format
 
-			status = send_unicast(ip, packet_content, sizeof(DATA) + 1);//call send function
+			status = send_unicast(data_packet.addr[1], packet_content, sizeof(DATA) + 1);//call send function
 
 			printf("Find a way & send successfully!\n");
 			break;

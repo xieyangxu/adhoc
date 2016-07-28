@@ -47,7 +47,7 @@ int on_receive_DATA(char* data)
 
 	if(is_local_IP(packet_DATA.addr[packet_DATA.addr_num - 1]))//if it is destination itself
 	{
-		print_DATA(packet_DATA);
+		print_DATA(&packet_DATA);
 		return 1;
 	}
 	else if(is_local_IP(packet_DATA.addr[0]))//if it is source it self
@@ -64,7 +64,7 @@ int on_receive_DATA(char* data)
 				char sd_packet[sizeof(DATA) + 1];//trans to char* format
 				sd_packet[0] = TYPE_DATA;
 				memcpy(sd_packet + 1, &packet_DATA, sizeof(DATA));
-				send_unicast(packet_DATA.addr[i - 1], sd_packet, sizeof(DATA) + 1);//deliver to the next
+				send_unicast(packet_DATA.addr[i + 1], sd_packet, sizeof(DATA) + 1);//deliver to the next
 				printf("Receive a DATA packet!!!\nDeliver it successfully!\n");
 				break;
 			}
