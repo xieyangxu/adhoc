@@ -93,8 +93,8 @@ int receive_RREQ(char *rreq){
 	num_to_ip(local_ip_num, add_ip);
 	printf("#\t\t\tAdd me: %s\t\t#\n",add_ip);
 	check_new(rc_rreq.addr[0], rc_rreq.dest_addr, rc_rreq.request_id);
-	rc_rreq.addr[rc_rreq.addr_num] = local_ip_num;
-	rc_rreq.addr_num++;
+	//rc_rreq.addr[rc_rreq.addr_num] = local_ip_num;
+	//rc_rreq.addr_num++;
 	char bc[sizeof(RREQ)+1];
 	bc[0] = TYPE_RREQ;
 	memcpy(bc+1, &rc_rreq, sizeof(RREQ));
@@ -135,7 +135,7 @@ int receive_RREP(char *rrep){
 	//如果不是addr[0]
 
 	printf("#\tI'm not the source, send continue!\t#\n#\tAnd I will insert the dest into my cache.\t#\n#########################################################\n");
-	insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr[rc_rrep.dest_addr_index]);
+	//insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr[rc_rrep.dest_addr_index]);
 	rc_rrep.dest_addr_index--;
 	send_RREP(rc_rrep);
 	return 0;
