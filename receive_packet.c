@@ -25,7 +25,7 @@ void receive_packet(char *packet, int packet_len){
 	
 	switch(data_type){
 		//case TYPE_DATA: printf("The cotent of packet received is: %s\n",data);break;
-		case TYPE_DATA: print_packet(data);break;
+		case TYPE_DATA: on_receive_DATA(data);break;
 		case TYPE_RREQ: printf("Type of packet received is: %s\nRun receive_RREQ\n","RREQ");receive_RREQ(data);break;
 		case TYPE_RREP: printf("Type of packet received is: %s\nRun receive_RREP\n","RREP");receive_RREP(data);break;
 	}
@@ -34,7 +34,7 @@ void receive_packet(char *packet, int packet_len){
     //Todo
 
 }
-int on_receive_DATA(DATA* received_packet)
+int on_receive_DATA(char* data)
 {
 	int status = 0;
 	//status
@@ -42,26 +42,29 @@ int on_receive_DATA(DATA* received_packet)
 	//-1 = is S, Loop, discard
 	//2 = is Diliver, success
 	//0 = error
-	if(is_local_IP(received_packet->addr[received_packet->addr_num - 1]))//if it is destination itself
+	DATA packet_DATA;
+	memcpy(&packet_DATA, data, sizeof(DATA));//trans to DATA format
+
+	if(is_local_IP(packet_DATA.addr[packet_DATA.addr_num - 1]))//if it is destination itself
 	{
-		print_DATA(received_packet);
+		print_DATA(packet_DATA);
 		return 1;
 	}
-	else if(is_local_IP(received_packet->addr[0]))//if it is source it self
+	else if(is_local_IP(packet_DATA.addr[0]))//if it is source it self
 	{
 		printf("Receive a DATA packet!!!\nLoop, discard\n");
 		return -1;
 	}
 	else{
 		int i;
-		for(i=1; i < (received_packet->addr_num - 1); i++)
+		for(i=1; i < (packet_DATA.addr_num - 1); i++)
 		{
-			if(is_local_IP(received_packet->addr[i]))//it is a deliver
+			if(is_local_IP(packet_DATA.addr[i]))//it is a deliver
 			{
 				char sd_packet[sizeof(DATA) + 1];//trans to char* format
 				sd_packet[0] = TYPE_DATA;
-				memcpy(sd_packet + 1, received_packet, sizeof(DATA));
-				send_unicast(received_packet->addr[i - 1], sd_packet, sizeof(DATA) + 1);//deliver to the next
+				memcpy(sd_packet + 1, &packet_DATA, sizeof(DATA));
+				send_unicast(packet_DATA.addr[i - 1], sd_packet, sizeof(DATA) + 1);//deliver to the next
 				printf("Receive a DATA packet!!!\nDeliver it successfully!\n");
 				break;
 			}
