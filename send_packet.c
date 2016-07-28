@@ -4,9 +4,10 @@
 #include "header.h"
 #include "flood.h"
 #include "DSR.h"
+#include "cache.h"
 #include <unistd.h>
 
-#define RETRY_LIMIT 3
+#define RETRY_LIMIT 15
 
 int send_packet(unsigned int ip, char *data,int data_len){
     int status = 0;//send_unicast(ip, data, data_len);
@@ -39,7 +40,7 @@ int send_packet(unsigned int ip, char *data,int data_len){
 		usleep(50000);
 
 	}
-	printf("Can find the way, send fail!\n");
+	//printf("Can find the way, send fail!\n");
 	status = 0;
     return status;
 }

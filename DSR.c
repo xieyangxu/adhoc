@@ -100,7 +100,7 @@ int receive_RREQ(char *rreq){
 	memcpy(bc+1, &rc_rreq, sizeof(RREQ));
 
 	send_broadcast(bc, sizeof(RREQ)+1);
-	printf("#\t\t\t\tBroadcast!\t\t\t\t#\n##########################################################\n");
+	printf("#\t\tBroadcast!\t\t\t\t#\n##########################################################\n");
 	return 0;
 }
 
@@ -134,7 +134,7 @@ int receive_RREP(char *rrep){
 	}
 	//如果不是addr[0]
 
-	printf("#\tI'm not the source, send continue!\t#\n#\tAnd I will insert the dest into my cache.\t#\n#########################################################\n");
+	printf("#\tI'm not the source, send continue!\t\t#\n#\tAnd I will insert the dest into my cache.\t#\n#########################################################\n");
 	//insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr[rc_rrep.dest_addr_index]);
 	rc_rrep.dest_addr_index--;
 	send_RREP(rc_rrep);
