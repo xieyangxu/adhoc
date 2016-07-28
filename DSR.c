@@ -111,7 +111,7 @@ int send_RREP(RREP rrep){
 	printf("#\tThe target of RREP is:\t%s\t\t#\n", tar_ip);
 	sd[0] = TYPE_RREP;
 	memcpy(sd+1,&rrep,sizeof(RREP));
-	send_unicast(rrep.addr[rrep.dest_addr_index],&sd,sizeof(RREP));
+	send_unicast(rrep.addr[rrep.dest_addr_index],&sd,sizeof(RREP) + 1);
 	printf("#\t\tSend RREP successfully!\t\t\t#\n#########################################################\n");
 }
 
