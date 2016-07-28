@@ -8,7 +8,7 @@
 int times = 0;
 void receive_packet(char *packet, int packet_len){
 	char data_type;	
-	printf("%d\n",++times);
+	printf("#No.%d\n",++times);
 	strncpy(&data_type,packet,1);
 
 	char data[packet_len-1];
@@ -25,8 +25,8 @@ void receive_packet(char *packet, int packet_len){
 	
 	switch(data_type){
 		case TYPE_DATA: printf("The cotent of packet received is: %s\n",data);break;
-		case TYPE_RREQ: printf("Type of packet received is: %s\n","RREQ");printf("Run reRREQ\n");receive_RREQ(data);break;
-		case TYPE_RREP: printf("Type of packet received is: %s\n","RREP");printf("Run reRREP\n");receive_RREP(data);break;
+		case TYPE_RREQ: printf("Type of packet received is: %s\nRun receive_RREQ\n","RREQ");receive_RREQ(data);break;
+		case TYPE_RREP: printf("Type of packet received is: %s\nRun receive_RREP\n","RREP");receive_RREP(data);break;
 	}
 	
     
