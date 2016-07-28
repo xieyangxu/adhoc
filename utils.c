@@ -21,7 +21,7 @@ int send_unicast(unsigned int ip32, char *packet,int packet_len){
 	
     unsigned char *bytes = (unsigned char *) &ip32;  
     sprintf (ip, "%d.%d.%d.%d", bytes[0], bytes[1], bytes[2], bytes[3]);
-    printf("ip: %s\n",ip);
+    //printf("ip: %s\n",ip);
     strcpy(buffer, ip);
     memcpy(buffer+IP_LENGTH, packet, packet_len);
     int status = send_socket_packet(buffer, packet_len+IP_LENGTH);

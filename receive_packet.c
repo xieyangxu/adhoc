@@ -8,7 +8,7 @@
 int times = 0;
 void receive_packet(char *packet, int packet_len){
 	char data_type;	
-	printf("#No.%d\n",++times);
+	printf("#No.%d####################################################\n",++times);
 	strncpy(&data_type,packet,1);
 
 	char data[packet_len-1];
@@ -19,15 +19,15 @@ void receive_packet(char *packet, int packet_len){
 	//memcpy(&rreq,&data,sizeof(RREQ));
 	//printf("destis: %d\n",rreq.dest_addr);
 
-    printf("The length of packet received is: %d\n",packet_len-1);
+    printf("#\tThe length of packet received is: %d\t\t#\n",packet_len-1);
 	//printf("the cotent of packet received is: %s\n",packet);
 	
 	
 	switch(data_type){
 		//case TYPE_DATA: printf("The cotent of packet received is: %s\n",data);break;
-		case TYPE_DATA: print_packet(data);break;
-		case TYPE_RREQ: printf("Type of packet received is: %s\nRun receive_RREQ\n","RREQ");receive_RREQ(data);break;
-		case TYPE_RREP: printf("Type of packet received is: %s\nRun receive_RREP\n","RREP");receive_RREP(data);break;
+		case TYPE_DATA: printf("#\tType of packet received is: %s\t\t#\n","DATA");print_packet(data);break;
+		case TYPE_RREQ: printf("#\tType of packet received is: %s\t\t#\n#\t\t\t\t\t\t\t#\n#\t\tRun receive_RREQ\t\t\t#\n","RREQ");receive_RREQ(data);break;
+		case TYPE_RREP: printf("#\tType of packet received is: %s\t\t#\n#\t\t\t\t\t\t\t#\n#\t\tRun receive_RREP\t\t\t#\n","RREP");receive_RREP(data);break;
 	}
 	
     
@@ -39,7 +39,7 @@ void print_packet(char* packet_content)
 {
 	DATA rc_data;
 	memcpy(&rc_data, packet_content, sizeof(DATA));	
-	printf("Receive a DATA packet!!!\nThe cotent of packet received is: %s\n", rc_data.data);
+	printf("#################Receive a DATA packet!##################\n\tThe cotent of packet received is:\t\t\n\t%s\n#########################################################\n", rc_data.data);
 	return;
 }
 

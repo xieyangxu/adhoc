@@ -9,7 +9,7 @@ int ini_find_route(RREQ *rreq){
 
 	char dest_ip[20];
 	num_to_ip(rreq->dest_addr, dest_ip);
-	printf("\n\n\nInitial finding a route to %s\n",dest_ip);
+	printf("\n\n\nInitialize finding a route to %s\n",dest_ip);
 
 	//1. Check whether I'm the dst
 	if(is_local_IP(rreq->dest_addr)){
@@ -43,7 +43,7 @@ int receive_RREQ(char *rreq){
 	memcpy(&rc_rreq, rreq, sizeof(RREQ));
 	//myself
 	if(rc_rreq.addr[0] == local_ip_num){
-		printf("It's my packet, ignore it.\n\n");
+		printf("#\tIt's my packet, ignore it.\t\t\t#\n#########################################################\n");
 		return 0;
 	}
 	char rreq_ip[20];
@@ -52,29 +52,28 @@ int receive_RREQ(char *rreq){
 	num_to_ip(rc_rreq.addr[rc_rreq.addr_num-1], rreq_ip);
 	num_to_ip(rc_rreq.dest_addr, rreq_dest_ip);
 	num_to_ip(rc_rreq.addr[0], rreq_sour_ip);
-	printf("Receive a RREQ from %s\nThe source is %s\nAnd he wants to find %s\n\n", rreq_ip, rreq_sour_ip, rreq_dest_ip);
+	printf("#\tReceive a RREQ from:\t%s\t\t#\n#\tThe source is:\t\t%s\t\t#\n#\tAnd he wants to find:\t%s\t\t#\n", rreq_ip, rreq_sour_ip, rreq_dest_ip);
 	//printf("srs:%d,%d\n",rc_rreq.addr[0], rc_rreq.dest_addr);
 
 	if(check_new(rc_rreq.addr[0], rc_rreq.dest_addr, rc_rreq.request_id) == -1){
-		printf("Check already!\n");
+		printf("#\t\t\tCheck already!\t\t\t#\n#########################################################\n");
 		return 0;
 	}
 	int found = 0;
 
 	//printf("RREQ:%d\nLocal:%d\n",rc_rreq.dest_addr,local_ip_num);
-
+	rc_rreq.addr_num++;
+	rc_rreq.addr[rc_rreq.addr_num-1] = local_ip_num;
+	char rreq_reIP[20];
+	num_to_ip(rc_rreq.addr[rc_rreq.addr_num-2], rreq_reIP);
 	//如果是dest
-	if(rc_rreq.dest_addr == local_ip_num){
-		rc_rreq.addr_num++;
-		rc_rreq.addr[rc_rreq.addr_num-1] = local_ip_num;
-		char rreq_reIP[20];
-		num_to_ip(rc_rreq.addr[rc_rreq.addr_num-2], rreq_reIP);
-		printf("I'm the destination, return a RREP to: %s\n\n", rreq_reIP);
+	if(rc_rreq.dest_addr == local_ip_num){	
+		printf("#\tI'm dest, send RREP to:\t%s\t\t#\n", rreq_reIP);
 		found = 1;
 	}
 	//如果不是先查cache
 	if(find_path(rc_rreq.dest_addr, rc_rreq.addr+rc_rreq.addr_num) != -1){
-		printf("I find route in the cache, return a RREP\n\n");
+		printf("I find route in the cache, return a RREP to: %s\t#\n#########################################################\n", rreq_reIP);
 		found = 1;
 	}
 
@@ -90,7 +89,10 @@ int receive_RREQ(char *rreq){
 	}
 
 	//broadcast
-	printf("Add me: %d\n",local_ip_num);
+	char add_ip[20];
+	num_to_ip(local_ip_num, add_ip);
+	printf("#\t\t\tAdd me: %s\t\t#\n",add_ip);
+	check_new(rc_rreq.addr[0], rc_rreq.dest_addr, rc_rreq.request_id);
 	rc_rreq.addr[rc_rreq.addr_num] = local_ip_num;
 	rc_rreq.addr_num++;
 	char bc[sizeof(RREQ)+1];
@@ -98,7 +100,7 @@ int receive_RREQ(char *rreq){
 	memcpy(bc+1, &rc_rreq, sizeof(RREQ));
 
 	send_broadcast(bc, sizeof(RREQ)+1);
-	printf("RREQ:No route found in cache, broadcast!\n\n");
+	printf("#\t\t\t\tBroadcast!\t\t\t\t#\n##########################################################\n");
 	return 0;
 }
 
@@ -106,11 +108,11 @@ int send_RREP(RREP rrep){
 	char sd[sizeof(RREP)+1];
 	char tar_ip[20];
 	num_to_ip(rrep.addr[rrep.dest_addr_index], tar_ip);
-	printf("The target of RREP is: %s\n", tar_ip);
+	printf("#\tThe target of RREP is:\t%s\t\t#\n", tar_ip);
 	sd[0] = TYPE_RREP;
 	memcpy(sd+1,&rrep,sizeof(RREP));
 	send_unicast(rrep.addr[rrep.dest_addr_index],&sd,sizeof(RREP));
-	printf("Send RREP successfully!\n\n");
+	printf("#\t\tSend RREP successfully!\t\t\t#\n#########################################################\n");
 }
 
 int receive_RREP(char *rrep){
@@ -121,18 +123,18 @@ int receive_RREP(char *rrep){
 	char rrep_sour[20];
 	num_to_ip(rc_rrep.addr[0], rrep_sour);
 	num_to_ip(rc_rrep.addr[rc_rrep.dest_addr_index+1], rrep_from);
-	printf("I get a RREP from: %s\nAnd the source is: %s\n", rrep_from, rrep_sour);
+	printf("#\tI get a RREP from:\t%s\t\t#\n#\tAnd the source is:\t%s\t\t#\n", rrep_from, rrep_sour);
 	
 	//如果自己是addr[0]	
 	if(rc_rrep.dest_addr_index == 0){
 		//加到cache
-		printf("I'm the source, and insert to the cache!\n\n");
+		printf("#\tI'm the source, and insert to the cache!\t#\n#########################################################\n");
 		insert_path(rc_rrep.addr[rc_rrep.addr_num-1],rc_rrep.addr_num,rc_rrep.addr);
 		return 1;
 	}
 	//如果不是addr[0]
 
-	printf("I'm not the source, send continue!\nAnd I will insert the dest into my cache.\n\n");
+	printf("#\tI'm not the source, send continue!\t#\n#\tAnd I will insert the dest into my cache.\t#\n#########################################################\n");
 	insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr[rc_rrep.dest_addr_index]);
 	rc_rrep.dest_addr_index--;
 	send_RREP(rc_rrep);
