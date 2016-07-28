@@ -24,7 +24,8 @@ void receive_packet(char *packet, int packet_len){
 	
 	
 	switch(data_type){
-		case TYPE_DATA: printf("The cotent of packet received is: %s\n",data);break;
+		//case TYPE_DATA: printf("The cotent of packet received is: %s\n",data);break;
+		case TYPE_DATA: print_packet(data);break;
 		case TYPE_RREQ: printf("Type of packet received is: %s\nRun receive_RREQ\n","RREQ");receive_RREQ(data);break;
 		case TYPE_RREP: printf("Type of packet received is: %s\nRun receive_RREP\n","RREP");receive_RREP(data);break;
 	}
@@ -34,5 +35,10 @@ void receive_packet(char *packet, int packet_len){
 
 }
 
+void print_packet(char* packet_content)
+{
+	printf("Receive a DATA packet!!!\nThe cotent of packet received is: %s\n", packet_content);
+	return;
+}
 
 

@@ -5,3 +5,4 @@
 //          packet: the whole packet you received
 //          packet_len: the length of packet
 void receive_packet(char *packet, int packet_len);
+void print_packet(char* packet_content);
