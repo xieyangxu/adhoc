@@ -76,9 +76,10 @@ int on_receive_DATA(char* data)
 
 void print_DATA(DATA* received_packet_data)
 {
-	//DATA rc_data;
-	//memcpy(&rc_data, received_packet_data, sizeof(DATA));	
-	printf("#################Receive a DATA packet!##################\n\tThe cotent of packet received is:\t\t\n\t%s\n#########################################################\n", received_packet_data->data);
+	char data[received_packet_data->data_len+1];
+	memcpy(&data, received_packet_data->data, received_packet_data->data_len);
+	data[received_packet_data->data_len]='\0';
+	printf("#################Receive a DATA packet!##################\n\tThe cotent of packet received is:\t\t\n\t%s\n#########################################################\n", data);
 }
 
 
