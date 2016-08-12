@@ -21,7 +21,8 @@ int send_packet(unsigned int ip, char *data,int data_len){
 	//0: broadcast
 	int i;
 	for(i=0;i< RETRY_LIMIT;i++){
-		if(ini_find_route(&rreq) == 1){//ini_find_route will return 1 if find a route successfully
+		int x = ini_find_route(&rreq);
+		if( x== 1){//ini_find_route will return 1 if find a route successfully
 			DATA data_packet;
 			
 			data_packet.addr_num = find_path(ip, data_packet.addr);//fill DATA.addr_num & DATA.addr[]
@@ -37,6 +38,7 @@ int send_packet(unsigned int ip, char *data,int data_len){
 			printf("Find a way & send successfully!\n");
 			break;
 		}
+		else if(x == -1)return -1;
 		usleep(50000);
 
 	}

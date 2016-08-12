@@ -72,15 +72,17 @@ int receive_RREQ(char *rreq){
 		found = 1;
 	}
 	//如果不是先查cache
-	if(find_path(rc_rreq.dest_addr, rc_rreq.addr+rc_rreq.addr_num) != -1){
-		printf("I find route in the cache, return a RREP to: %s\t#\n#########################################################\n", rreq_reIP);
-		found = 1;
+	int find_len = find_path(rc_rreq.dest_addr, rc_rreq.addr+rc_rreq.addr_num-1);
+	if(find_len != -1){
+		rc_rreq.addr_num += find_len-1;
+		printf("#Find in cache, return RREP!!!\t\t\t#\n");
+		found = 2;
 	}
 
 	if(found){
 		RREP rrep;
 		rrep.addr_num = rc_rreq.addr_num;
-		rrep.dest_addr_index = rc_rreq.addr_num - 2;
+		rrep.dest_addr_index = rc_rreq.addr_num - 2 - (found-1)*(find_len-1);
 		int i;
 		for(i=0;i<rc_rreq.addr_num;++i)
 			rrep.addr[i]=rc_rreq.addr[i];
@@ -100,7 +102,7 @@ int receive_RREQ(char *rreq){
 	memcpy(bc+1, &rc_rreq, sizeof(RREQ));
 
 	send_broadcast(bc, sizeof(RREQ)+1);
-	printf("#\t\tBroadcast!\t\t\t\t#\n##########################################################\n");
+	printf("#\t\tBroadcast!\t\t\t\t#\n#########################################################\n");
 	return 0;
 }
 
@@ -135,7 +137,7 @@ int receive_RREP(char *rrep){
 	//如果不是addr[0]
 
 	printf("#\tI'm not the source, send continue!\t\t#\n#\tAnd I will insert the dest into my cache.\t#\n#########################################################\n");
-	//insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr[rc_rrep.dest_addr_index]);
+	insert_path(rc_rrep.addr[rc_rrep.addr_num-1], rc_rrep.addr_num-rc_rrep.dest_addr_index, rc_rrep.addr+rc_rrep.dest_addr_index);
 	rc_rrep.dest_addr_index--;
 	send_RREP(rc_rrep);
 	return 0;
