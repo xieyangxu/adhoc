@@ -28,7 +28,7 @@ void receive_packet(char *packet, int packet_len){
 		case TYPE_DATA: printf("#\tType of packet received is: %s\t\t#\n","DATA");on_receive_DATA(data);break;
 		case TYPE_RREQ: printf("#\tType of packet received is: %s\t\t#\n#\t\t\t\t\t\t\t#\n#\t\tRun receive_RREQ\t\t\t#\n","RREQ");receive_RREQ(data);break;
 		case TYPE_RREP: printf("#\tType of packet received is: %s\t\t#\n#\t\t\t\t\t\t\t#\n#\t\tRun receive_RREP\t\t\t#\n","RREP");receive_RREP(data);break;
-		case TYPE_ACK: on_receive_ACK(data);break;
+		case TYPE_BRK: on_receive_BRK(data);break;
 	}
 	
     
@@ -75,28 +75,28 @@ int on_receive_DATA(char* data)
 	return 0;
 }
 
-int on_receive_ACK(char* data)
+int on_receive_BRK(char* data)
 {
 	int status = 0;
 	//1 = delete successfully
 	//2 = no such route
-	ACK ack;
-	memcpy(&ack, data, sizeof(ACK));
+	BRK brk;
+	memcpy(&brk, data, sizeof(BRK));
 
 	unsigned int* addr;
-	if(find_path(ack.dest_addr, addr))//if path to the broken addr exits
+	if(find_path(brk.dest_addr, addr))//if path to the broken addr exits
 	{
-		delete_path(ack.dest_addr);
+		delete_path(brk.dest_addr);
 		status = 1;
 		int i;
-		for(i = 1; i < (ack.addr_num - 1); i++)
+		for(i = 1; i < (brk.addr_num - 1); i++)
 		{
-			if(is_local_IP(data.dest_addr))
+			if(is_local_IP(brk.dest_addr))
 			{
-				char sd_packet[sizeof(ACK) + 1];
-				sd_packet[0] = TYPE_ACK;
-				memcpy(sd_packet + 1, &ack, sizeof(ACK));
-				send_unicast(ack.addr[i - 1], sd_packet, sizeof(ACK) + 1);
+				char sd_packet[sizeof(BRK) + 1];
+				sd_packet[0] = TYPE_BRK;
+				memcpy(sd_packet + 1, &brk, sizeof(BRK));
+				send_unicast(brk.addr[i - 1], sd_packet, sizeof(BRK) + 1);
 				break;
 			}
 		}

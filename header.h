@@ -14,7 +14,7 @@
 #define TYPE_RREQ '2'
 #define TYPE_RREP '3'
 #define TYPE_RERR '4'
-#define TYPE_ACK  '5'
+#define TYPE_BRK  '5'
 
 //There are only three computers are required in this project, 
 //so we assume that setting the address list length to 8 is enough. 
@@ -45,11 +45,11 @@ typedef struct{
     char data[MAX_DATA_LEN];
 }DATA;
 
-//ACK packet
+//BRK packet
 typedef struct{
     unsigned int dest_addr;
     int addr_num;
     unsigned int addr[MAX_ADDR_NUM];
-}ACK;
+}BRK;
 
 #endif
