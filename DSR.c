@@ -75,7 +75,7 @@ int receive_RREQ(char *rreq){
 	int find_len = find_path(rc_rreq.dest_addr, rc_rreq.addr+rc_rreq.addr_num-1);
 	if(find_len != -1){
 		rc_rreq.addr_num += find_len-1;
-		printf("#Find in cache, return RREP!!!\t\t\t#\n");
+		printf("#\tFind in cache, return RREP!!!\t\t\t#\n");
 		found = 2;
 	}
 

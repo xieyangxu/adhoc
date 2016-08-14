@@ -59,4 +59,8 @@ typedef struct{
     unsigned int src_addr;
 }ACK;
 
+//extern int already_send_packet;
+//extern int get_ACK;
+//extern DATA *local_DATA;
+
 #endif

@@ -16,5 +16,4 @@ unsigned int local_ip_num;
 //       if you want to send a packet, use send_unicast in utils.h instead of this
 int send_socket_packet(char * packet,int packet_len);
 
-
 #endif
